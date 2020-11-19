@@ -11,16 +11,19 @@
             placeholder="Username"
             v-model="User.username"
             required
-            minlength=6
+            minlength="6"
+            :unique-key="true"
           />
         </div>
         <div class="form-group">
           <label class="pull-left"> Password </label>
           <input
-            type="text"
+            type="password"
             class="form-control"
             placeholder="Password "
             v-model="User.password"
+            required
+            minlength="6"
           />
         </div>
         <div class="form-group">
@@ -30,6 +33,7 @@
             class="form-control"
             placeholder="Address "
             v-model="User.address"
+            required
           />
         </div>
         <div class="form-group">
@@ -39,6 +43,7 @@
             class="form-control"
             placeholder="State "
             v-model="User.state"
+            required
           />
         </div>
         <div class="form-group">
@@ -48,15 +53,17 @@
             class="form-control"
             placeholder="Country "
             v-model="User.country"
+            required
           />
         </div>
         <div class="form-group">
           <label class="pull-left"> Email Address </label>
           <input
-            type="text"
+            type="email"
             class="form-control"
             placeholder="Email "
             v-model="User.emailAddress"
+            required
           />
         </div>
         <div class="form-group">
@@ -66,6 +73,9 @@
             class="form-control"
             placeholder="PAN number "
             v-model="User.pan"
+            required
+            minlength="6"
+            maxlength="10"
           />
         </div>
         <div class="form-group">
@@ -75,6 +85,9 @@
             class="form-control"
             placeholder="Contact "
             v-model="User.contactNo"
+            required
+            minlength="10"
+            maxlength="12"
           />
         </div>
         <div class="form-group">
@@ -84,6 +97,7 @@
             class="form-control"
             placeholder="Date of birth "
             v-model="User.dob"
+            required
           />
         </div>
         <div class="form-group">
@@ -93,19 +107,21 @@
             class="form-control"
             placeholder="Account type "
             v-model="User.accountType"
+            required
           />
         </div>
       </div>
-        <button
-          type="submit"
-          class="btn btn-large btn-block btn-primary full-width"
-          @click="addToAPI">
-          Submit
-        </button>
+      <button
+        type="submit"
+        class="btn btn-large btn-block btn-primary full-width"
+        @click="addToAPI"
+      >
+        Submit
+      </button>
       <router-link to="/accounts/login">
         <button class="btn btn-large btn-block btn-success full-width">
-        Cancel
-      </button>
+          Cancel
+        </button>
       </router-link>
     </form>
   </div>
@@ -114,10 +130,10 @@
 <script>
 /*eslint-disable */
 import axios from "axios";
-import router from '../router';
+import router from "../router";
 export default {
   // name: 'Register',
-  
+
   data() {
     return {
       User: {
@@ -151,15 +167,19 @@ export default {
         accountType: this.User.accountType,
       };
       console.log(newUser);
-      axios
-        .post("http://127.0.0.1:5000/accounts/signup", newUser)
-        .then((response) => {
-          console.log(response);
-          router.push({ name: 'Login' })
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (this.newUser != null) {
+        axios
+          .post("http://127.0.0.1:5000/accounts/signup", newUser)
+          .then((response) => {
+            console.log(response);
+            router.push({ name: "Login" });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        return "Please fill the required coloumns";
+      }
     },
   },
 };
@@ -171,17 +191,14 @@ h1,
 h2 {
   font-weight: normal;
 }
-
 ul {
   list-style-type: none;
   padding: 0;
 }
-
 li {
   display: inline-block;
   margin: 0 10px;
 }
-
 a {
   color: #42b983;
 }
