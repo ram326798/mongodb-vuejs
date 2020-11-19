@@ -10,6 +10,7 @@
             class="form-control"
             placeholder="Username"
             v-model="User.username"
+            required
           />
         </div>
         <div class="form-group">
@@ -19,15 +20,17 @@
             class="form-control"
             placeholder="Password "
             v-model="User.password"
+            required
           />
         </div>
       </div>
-        <button
-          type="submit"
-          class="btn btn-large btn-block btn-primary full-width"
-          @click="addToAPI">
-          Signin
-        </button>
+      <button
+        type="submit"
+        class="btn btn-large btn-block btn-primary full-width"
+        @click="addToAPI"
+      >
+        Signin
+      </button>
       <router-link to="/accounts/signup">
         <button
           type="submit"
@@ -43,9 +46,9 @@
 <script>
 /*eslint-disable */
 import axios from "axios";
-import router from '../router';
+import router from "../router";
 export default {
-  name: 'Login',
+  name: "Login",
   data() {
     return {
       User: {
@@ -60,19 +63,23 @@ export default {
       let newUser = {
         // name: this.User.name,
         username: this.User.username,
-        password: this.User.password
+        password: this.User.password,
       };
       console.log(newUser);
-      axios
-        .post("http://127.0.0.1:5000/accounts/login", newUser)
-        
-        .then((response) => {
-          console.log(response.data);
-          router.push({ name: 'accountdetails' })
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (this.newUser != null) {
+        axios
+          .post("http://127.0.0.1:5000/accounts/login", newUser)
+
+          .then((response) => {
+            console.log(response.data);
+            router.push({ name: "accountdetails" });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        return "Username and password should not blank";
+      }
     },
   },
 };
